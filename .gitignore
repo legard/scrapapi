@@ -1,0 +1,32 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.egg
+*.so
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv
+env/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+.installed.cfg
+.env
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+.continuerules
