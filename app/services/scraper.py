@@ -35,4 +35,3 @@ def scrape_url(url: str) -> dict:
     except Exception as e:
         logger.error(f"Failed to scrape URL {url}: {str(e)}")
         raise Exception(f"Failed to scrape URL: {str(e)}")
-        raise Exception(f"Failed to scrape URL: {str(e)}")
