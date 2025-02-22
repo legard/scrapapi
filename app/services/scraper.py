@@ -2,8 +2,10 @@ import logging
 
 import newspaper
 import nltk
+from newspaper.configuration import Configuration
 
 from app.core.celery import celery_app
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +16,17 @@ nltk.download("punkt_tab")
 def scrape_url(url: str) -> dict:
     logger.info(f"Starting to scrape URL: {url}")
     try:
-        article = newspaper.Article(url)
+        config = Configuration()
+
+        if settings.HTTP_PROXY:
+            logger.info(f"Using HTTP proxy: {settings.HTTP_PROXY}")
+            config.browser_user_agent = "Mozilla/5.0"
+            config.proxies = {
+                "http": settings.HTTP_PROXY,
+                "https": settings.HTTPS_PROXY or settings.HTTP_PROXY,
+            }
+
+        article = newspaper.Article(url, config=config)
         article.download()
         article.parse()
         article.nlp()

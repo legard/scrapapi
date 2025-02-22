@@ -9,6 +9,7 @@ ScrapAPI is a FastAPI-based web service designed for scraping and analyzing web 
 - **API Endpoints**: RESTful API for submitting scrape tasks and retrieving results.
 - **Redis Integration**: Redis is used as a message broker for Celery tasks.
 - **Flower Integration**: Monitor Celery tasks with Flower.
+- **Proxy Support**: Configurable HTTP/HTTPS proxies for scraping.
 
 ## Prerequisites
 
@@ -75,7 +76,20 @@ ScrapAPI is a FastAPI-based web service designed for scraping and analyzing web 
 
 ## Configuration
 
-The application uses environment variables for configuration. The default settings are defined in `app/core/config.py`. You can override these settings by creating a `.env` file in the root directory.
+Configuration is managed via environment variables or the Settings  class in app/core/config.py. Key settings include:
+
+- REDIS_URL: URL for the Redis instance.
+- HTTP_PROXY: HTTP proxy for scraping (optional).
+- HTTPS_PROXY: HTTPS proxy for scraping (optional).
+
+## Proxy Configuration
+To use proxies, set the HTTP_PROXY and HTTPS_PROXY environment variables in the worker service in docker-compose.yml:
+
+```
+environment:
+  - HTTP_PROXY=${HTTP_PROXY}
+  - HTTPS_PROXY=${HTTPS_PROXY}
+```
 
 ## Development
 
