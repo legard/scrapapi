@@ -41,6 +41,7 @@ def scrape_url(url: str) -> dict:
             "keywords": article.keywords,
             "summary": article.summary,
             "url": url,
+            "link": url,
         }
         logger.info(f"Successfully scraped URL: {url}")
         return result
