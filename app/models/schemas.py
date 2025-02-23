@@ -23,7 +23,6 @@ class ScrapedData(BaseModel):
     keywords: list[str] | None = None
     summary: str | None = None
     url: str
-    link: str | None = None
 
 
 class TaskResponse(BaseModel):
