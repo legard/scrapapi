@@ -1,15 +1,15 @@
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS base
 
 ENV UV_LINK_MODE=copy
 
 WORKDIR /app
 
-ADD . /app
+COPY pyproject.toml /app/
 
 RUN uv sync
+
+COPY . /app
 
 ENV PATH="/app/.venv/bin:$PATH"
 
 ENTRYPOINT []
-
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
