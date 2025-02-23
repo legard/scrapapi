@@ -3,6 +3,12 @@ import logging
 import newspaper
 import nltk
 from newspaper.configuration import Configuration
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from app.core.celery import celery_app
 from app.core.config import settings
@@ -12,8 +18,15 @@ logger = logging.getLogger(__name__)
 nltk.download("punkt_tab")
 
 
-@celery_app.task(name="app.services.scraper.scrape_url")
-def scrape_url(url: str) -> dict:
+@retry(
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    stop=stop_after_attempt(5),
+    retry=retry_if_exception_type(Exception),
+    before_sleep=lambda retry_state: logger.warning(
+        f"Retry state: {retry_state}, Outcome: {retry_state.outcome}"
+    ),
+)
+def scrape_url_with_retry(url: str) -> dict:
     logger.info(f"Starting to scrape URL: {url}")
     try:
         config = Configuration()
@@ -47,3 +60,8 @@ def scrape_url(url: str) -> dict:
     except Exception as e:
         logger.error(f"Failed to scrape URL {url}: {str(e)}")
         raise Exception(f"Failed to scrape URL: {str(e)}")
+
+
+@celery_app.task(name="app.services.scraper.scrape_url")
+def scrape_url(url: str) -> dict:
+    return scrape_url_with_retry(url)
