@@ -15,6 +15,7 @@ from app.core.celery import celery_app
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 nltk.download("punkt_tab")
 
