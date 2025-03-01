@@ -16,7 +16,7 @@ services:
 
   worker:
     build: .
-    command: celery -A app.core.celery.celery_app worker -Q main-queue --loglevel=info
+    command: celery -A app.core.celery.celery_app worker -Q main-queue --loglevel=warning
     environment:
       - HTTP_PROXY=${HTTP_PROXY}
       - HTTPS_PROXY=${HTTPS_PROXY}
