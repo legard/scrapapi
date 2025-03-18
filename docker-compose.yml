@@ -5,6 +5,7 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    restart: unless-stopped
   
   web:
     build: .
@@ -15,6 +16,7 @@ services:
       - REDIS_URL=redis://redis:6379
     depends_on:
       - redis
+    restart: unless-stopped
 
   worker:
     build: .
@@ -24,6 +26,7 @@ services:
       - HTTPS_PROXY=${HTTPS_PROXY}
     depends_on:
       - redis
+    restart: unless-stopped
 
   flower:
     build: .
@@ -32,6 +35,7 @@ services:
       - "5555:5555"
     depends_on:
       - redis
+    restart: unless-stopped
 
 volumes:
   redis-data:
